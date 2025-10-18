@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from datetime import timedelta
 
-#expected_price[crop] = 0.7 * season_avg + 0.3 * (season_avg + 30 * trend)
+# expected_price[crop] = 0.7 * season_avg + 0.3 * (season_avg + 30 * trend)
 
 def compute_season_avg_and_trend(df, crop_name):
     # converting the dates to datetime format
@@ -11,7 +11,7 @@ def compute_season_avg_and_trend(df, crop_name):
     today = df['arrival_date'].max()
 
     #filtering for the required crop
-    crop_df = df[df['commodity'].str.lower() == crop_name.lower()].copy()
+    crop_df = df[df['commodity'].str.lower().str.contains(crop_name.lower(), na=False)].copy()
     if crop_df.empty:
         return {'seasonal_avg': None, 'trend': None, 'expected_price': None}
     
@@ -28,16 +28,16 @@ def compute_season_avg_and_trend(df, crop_name):
         X = np.arange(len(df_30d)).reshape(-1, 1)
         Y = df_30d['modal_price'].astype(float).values.reshape(-1, 1)
         model = LinearRegression().fit(X, Y)
-        trend = float(model.coef_[0][0]) #Rs per day
-    #expected price
+        trend = float(model.coef_[0][0]) # Rs per day
+    # expected price
     exp_price = None
     if trend is not None and seasonal_avg is not None:
         exp_price = 0.7 * seasonal_avg + 0.3 * (seasonal_avg + 30 * trend)
-    return {'seasonal_avg': seasonal_avg, 'trend': trend, 'expected_price': exp_price}
+    return {'seasonal_avg': round(seasonal_avg, 3), 'trend': round(trend, 3), 'expected_price': round(exp_price, 3)}
 
 
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     df = pd.read_csv("data/mandi_prices.csv")
     result = compute_season_avg_and_trend(df, "Potato")
-    print("Potato: ", result)
+    print("Potato: ", result)'''
 
