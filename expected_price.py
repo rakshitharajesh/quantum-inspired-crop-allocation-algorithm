@@ -35,7 +35,6 @@ def compute_season_avg_and_trend(df, crop_name):
         exp_price = 0.7 * seasonal_avg + 0.3 * (seasonal_avg + 30 * trend)
     return {'seasonal_avg': round(seasonal_avg, 3), 'trend': round(trend, 3), 'expected_price': round(exp_price, 3)}
 
-
 '''if __name__ == "__main__":
     df = pd.read_csv("data/mandi_prices.csv")
     result = compute_season_avg_and_trend(df, "Potato")

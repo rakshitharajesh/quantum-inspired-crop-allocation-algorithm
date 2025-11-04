@@ -1,0 +1,17 @@
+pandas
+numpy
+python-dotenv
+requests
+
+# Quantum & optimization stack
+qiskit
+qiskit-algorithms
+qiskit-aer
+qiskit-optimization
+
+# Optional (for better numerical stability or debugging)
+matplotlib
+scipy
+seaborn
+
+scikit-learn
